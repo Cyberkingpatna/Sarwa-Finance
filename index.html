@@ -3,15 +3,15 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.5, user-scalable=yes">
-  <title>ग्राम पंचायत सर्वा</title>
+  <title>ग्राम पंचायत सर्वा · उन्नत डैशबोर्ड</title>
   <!-- फॉन्ट और आइकन -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500;14..32,600;14..32,700;14..32,800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
   <!-- चार्ट.js -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
-  <!-- jsPDF (PDF एक्सपोर्ट के लिए) -->
+  <!-- jsPDF -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <style>
     * {
@@ -21,63 +21,67 @@
     }
 
     body {
-      font-family: 'Plus Jakarta Sans', sans-serif;
-      background: #e9eef3;
-      padding: 30px 16px;
-      color: #152b42;
+      font-family: 'Inter', sans-serif;
+      background: #f4f7fc;
+      padding: 24px 16px;
+      color: #1d2b3f;
       line-height: 1.5;
       transition: background-color 0.3s, color 0.3s;
     }
 
     /* डार्क मोड */
     body.dark-mode {
-      background: #0f1a2c;
-      color: #e0e7ff;
+      background: #0b1321;
+      color: #e5e9f0;
     }
     body.dark-mode .masthead {
-      background: rgba(20, 30, 50, 0.98);
-      border-color: #2a3a55;
+      background: #0f1a2b;
+      border-color: #2a3b4e;
     }
     body.dark-mode .control-ribbon,
     body.dark-mode .finance-summary,
+    body.dark-mode .chart-card,
     body.dark-mode .table-section,
     body.dark-mode .excellence-footer {
-      background: #1e293b;
-      border-color: #334155;
-      color: #e2e8f0;
+      background: #1a2637;
+      border-color: #31445c;
+      color: #e0e7f5;
     }
     body.dark-mode .search-module {
-      background: #2d3a4f;
-      border-color: #4a5a72;
+      background: #263445;
+      border-color: #405974;
     }
     body.dark-mode .search-module input {
-      background: transparent;
       color: white;
     }
     body.dark-mode .pill {
-      background: #2d3a4f;
-      color: #cbd5e1;
+      background: #263445;
+      color: #b5c9f0;
     }
     body.dark-mode .pill.active {
-      background: #3b82f6;
+      background: #3b6bb0;
       color: white;
     }
     body.dark-mode .legend-item,
     body.dark-mode .quick-stats,
-    body.dark-mode .stat-row,
-    body.dark-mode tbody tr:hover td {
-      background: #2d3a4f;
-      color: #e2e8f0;
+    body.dark-mode .stat-row {
+      background: #1f2d40;
+      color: #d3def5;
     }
-    body.dark-mode table th {
-      background: #1e293b;
-      color: #f1f5f9;
+    body.dark-mode th {
+      background: #25344a;
+      color: #f0f4fe;
     }
     body.dark-mode td {
-      border-bottom-color: #334155;
+      border-bottom-color: #33455e;
     }
     body.dark-mode .badge {
-      background: #3b82f6;
+      background: #2f5580;
+    }
+    body.dark-mode .donut {
+      background: #1e3146;
+      border-color: #3b5f85;
+      border-top-color: #6da5e6;
     }
 
     .flagship-dashboard {
@@ -89,22 +93,21 @@
     }
 
     /* एनिमेशन */
-    @keyframes fadeInUp {
-      0% { opacity: 0; transform: translateY(20px); }
+    @keyframes gentleRise {
+      0% { opacity: 0; transform: translateY(18px); }
       100% { opacity: 1; transform: translateY(0); }
     }
     .masthead, .control-ribbon, .insight-panel, .table-section, .excellence-footer {
-      animation: fadeInUp 0.7s ease forwards;
+      animation: gentleRise 0.6s ease forwards;
     }
 
-    /* ग्लासमॉर्फिज्म हेडर */
+    /* === हेडर === */
     .masthead {
-      background: rgba(10, 38, 65, 0.97);
-      backdrop-filter: blur(15px);
-      border-radius: 36px;
-      padding: 24px 20px;
-      border: 1px solid rgba(255,255,255,0.15);
-      box-shadow: 0 20px 30px -15px rgba(0,20,40,0.6);
+      background: linear-gradient(145deg, #0b2b44, #123b5e);
+      border-radius: 40px;
+      padding: 28px 26px;
+      box-shadow: 0 25px 35px -18px #0b2b4460;
+      border: 1px solid #ffffff30;
       color: white;
       transition: background 0.3s;
     }
@@ -118,298 +121,365 @@
     .insignia {
       display: flex;
       align-items: center;
-      gap: 16px;
+      gap: 18px;
     }
-    .ashoka-icon {
-      font-size: 3rem;
-      filter: drop-shadow(0 4px 8px #00000040);
+    .gov-icon {
+      background: #ffffff18;
+      backdrop-filter: blur(5px);
+      width: 64px;
+      height: 64px;
+      border-radius: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 2.5rem;
+      color: #ffd58c;
+      border: 2px solid #ffffff40;
     }
     .gov-title h1 {
       font-weight: 700;
-      font-size: 1.8rem;
-      background: linear-gradient(135deg, #fff8e7, #ffdba5);
+      font-size: 1.9rem;
+      background: linear-gradient(135deg, #fff2d4, #ffd58c);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      margin-bottom: 4px;
+      margin-bottom: 6px;
+      letter-spacing: -0.02em;
     }
     .gov-title .sub {
       display: flex;
       flex-wrap: wrap;
-      gap: 16px;
+      gap: 18px;
       font-size: 0.9rem;
-      opacity: 0.9;
+      opacity: 0.85;
     }
     .commission-tag {
-      background: #ffffff20;
-      border-radius: 100px;
-      padding: 8px 20px;
+      background: #ffffff1a;
+      border-radius: 60px;
+      padding: 10px 24px;
       font-weight: 500;
-      border: 1px solid #ffffff50;
-      white-space: nowrap;
+      border: 1px solid #ffffff70;
+      backdrop-filter: blur(5px);
+      cursor: pointer;
+      transition: 0.2s;
+    }
+    .commission-tag:hover {
+      background: #ffffff30;
     }
 
     /* मेट्रिक्स कार्ड */
     .gold-stats {
       display: grid;
       grid-template-columns: repeat(4, 1fr);
-      gap: 15px;
-      margin-top: 30px;
+      gap: 18px;
+      margin-top: 32px;
     }
     .metric-gold {
       background: rgba(255,255,255,0.08);
-      backdrop-filter: blur(8px);
-      border: 1px solid rgba(255,215,140,0.2);
-      border-radius: 24px;
-      padding: 18px 12px;
+      backdrop-filter: blur(6px);
+      border: 1px solid rgba(255,240,180,0.25);
+      border-radius: 32px;
+      padding: 20px 14px;
       display: flex;
       align-items: center;
-      gap: 12px;
-      transition: 0.3s;
+      gap: 14px;
+      transition: 0.25s;
     }
     .metric-gold:hover {
       background: rgba(255,255,255,0.15);
-      border-color: #ffb347;
-      transform: translateY(-3px);
+      border-color: #fec97a;
+      transform: translateY(-4px);
     }
     .metric-icon {
-      font-size: 2.2rem;
+      font-size: 2rem;
       background: #ffffff15;
-      width: 55px;
-      height: 55px;
-      border-radius: 24px;
+      width: 56px;
+      height: 56px;
+      border-radius: 28px;
       display: flex;
       align-items: center;
       justify-content: center;
     }
     .metric-content h2 {
-      font-size: 1.6rem;
+      font-size: 1.8rem;
       font-weight: 800;
+      line-height: 1.2;
     }
     .metric-content p {
       font-size: 0.7rem;
       text-transform: uppercase;
       opacity: 0.8;
+      letter-spacing: 0.4px;
     }
 
     /* कंट्रोल रिबन */
     .control-ribbon {
       background: white;
-      border-radius: 50px;
-      padding: 12px 20px;
+      border-radius: 60px;
+      padding: 12px 24px;
       display: flex;
       flex-wrap: wrap;
       align-items: center;
       justify-content: space-between;
-      gap: 15px;
-      border: 1px solid #cdddec;
+      gap: 18px;
+      border: 1px solid #dbe3ed;
+      box-shadow: 0 8px 16px -12px #132e46;
       transition: background 0.3s;
     }
     .search-module {
       display: flex;
       align-items: center;
-      background: #f4f9ff;
-      border-radius: 40px;
-      padding: 8px 18px;
-      min-width: 240px;
-      flex: 1 1 250px;
-      border: 1px solid #bfd5ec;
+      background: #f0f5fd;
+      border-radius: 50px;
+      padding: 10px 22px;
+      min-width: 260px;
+      flex: 1 1 260px;
+      border: 1px solid #c0d2e8;
+      transition: 0.2s;
     }
     .search-module i {
-      color: #456e9c;
-      margin-right: 10px;
+      color: #316797;
+      margin-right: 12px;
     }
     .search-module input {
       border: none;
       background: transparent;
-      font-size: 0.9rem;
+      font-size: 0.95rem;
       width: 100%;
       outline: none;
     }
     .filter-pills {
       display: flex;
-      gap: 8px;
+      gap: 10px;
       flex-wrap: wrap;
     }
     .pill {
-      background: #ecf3fc;
+      background: #eef4fb;
       border: none;
-      padding: 8px 16px;
+      padding: 10px 20px;
       border-radius: 40px;
       font-weight: 600;
-      font-size: 0.8rem;
-      color: #143c5c;
+      font-size: 0.85rem;
+      color: #1e4062;
       cursor: pointer;
-      transition: 0.2s;
+      transition: 0.15s;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
     }
     .pill.active {
-      background: #1a4a75;
+      background: #1e4f7a;
       color: white;
+    }
+    #yearFilter {
+      background: #eef4fb;
+      border: none;
+      padding: 10px 26px 10px 18px;
+      border-radius: 40px;
+      font-weight: 600;
+      font-size: 0.85rem;
+      color: #1e4062;
+      cursor: pointer;
+      outline: none;
     }
 
     /* इनसाइट पैनल */
     .insight-panel {
       display: grid;
       grid-template-columns: 1.2fr 2fr;
-      gap: 20px;
+      gap: 22px;
     }
     .finance-summary {
       background: white;
-      border-radius: 32px;
-      padding: 22px 18px;
-      box-shadow: 0 20px 35px -15px #12345660;
-      border: 1px solid #e0ebf5;
+      border-radius: 36px;
+      padding: 24px 22px;
+      box-shadow: 0 20px 35px -18px #14395640;
+      border: 1px solid #d5e2f0;
       transition: background 0.3s;
     }
     .summary-header {
       display: flex;
       justify-content: space-between;
-      margin-bottom: 15px;
+      margin-bottom: 18px;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 8px;
+      font-weight: 600;
+    }
+    .donut-progress {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-bottom: 15px;
     }
     .donut {
-      width: 120px;
-      height: 120px;
+      width: 130px;
+      height: 130px;
       border-radius: 50%;
-      background: radial-gradient(circle at 30% 30%, #f0f8ff, #d9e6f2);
+      background: radial-gradient(circle at 30% 30%, #f9fcff, #d6e4f5);
       display: flex;
       align-items: center;
       justify-content: center;
       font-weight: 800;
-      font-size: 2rem;
-      color: #004b7c;
-      border: 6px solid #c1ddfa;
-      border-top-color: #1f6392;
+      font-size: 2.2rem;
+      color: #02457a;
+      border: 8px solid #c7dfff;
+      border-top-color: #1f6eb0;
       margin: 0 auto 10px;
+      transition: background 0.3s;
     }
     .legend-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
       gap: 12px;
-      margin: 15px 0;
+      margin: 20px 0;
     }
     .legend-item {
       display: flex;
       align-items: center;
-      gap: 10px;
-      background: #f4faff;
-      padding: 10px;
-      border-radius: 18px;
+      gap: 12px;
+      background: #f6faff;
+      padding: 12px 14px;
+      border-radius: 26px;
+      font-weight: 500;
+    }
+    .color-dot {
+      width: 16px;
+      height: 16px;
+      border-radius: 20px;
+      display: inline-block;
     }
     .quick-stats {
-      background: #1f496e15;
-      border-radius: 22px;
-      padding: 16px;
+      background: #e9f1fa;
+      border-radius: 28px;
+      padding: 16px 18px;
+      margin: 16px 0;
     }
     .stat-row {
       display: flex;
       justify-content: space-between;
-      border-bottom: 1px dashed #b5cbe0;
+      border-bottom: 1px dashed #a5bed9;
       padding: 10px 0;
+    }
+    .progress-micro-bar {
+      background: #d9e2ef;
+      height: 16px;
+      border-radius: 40px;
+      overflow: hidden;
+    }
+    .progress-fill {
+      background: #1e6eb5;
+      height: 16px;
+      width: 0%;
+      border-radius: 40px;
+      transition: width 0.4s;
     }
 
     /* चार्ट कार्ड */
     .chart-card {
       background: white;
-      border-radius: 32px;
-      padding: 22px 18px;
-      border: 1px solid #e0ebf5;
+      border-radius: 36px;
+      padding: 24px 22px;
+      border: 1px solid #d5e2f0;
+      box-shadow: 0 20px 30px -16px #14365330;
       transition: background 0.3s;
     }
     canvas#yearChart {
-      max-height: 200px;
+      max-height: 210px;
       width: 100% !important;
     }
 
     /* टेबल सेक्शन */
     .table-section {
       background: white;
-      border-radius: 32px;
-      padding: 5px;
-      border: 1px solid #c4d6e8;
+      border-radius: 36px;
+      padding: 6px;
+      border: 1px solid #ccddec;
+      box-shadow: 0 10px 20px -10px #15365330;
       transition: background 0.3s;
     }
     .table-header {
       display: flex;
       justify-content: space-between;
       align-items: center;
-      padding: 18px 20px 8px;
+      padding: 20px 24px 10px;
       flex-wrap: wrap;
-      gap: 10px;
+      gap: 12px;
     }
     .table-header h2 {
-      font-weight: 800;
-      font-size: 1.5rem;
+      font-weight: 700;
+      font-size: 1.6rem;
     }
     .badge {
-      background: #1b3855;
+      background: #1f4b73;
       color: white;
-      padding: 6px 18px;
-      border-radius: 40px;
+      padding: 8px 22px;
+      border-radius: 50px;
       font-weight: 600;
     }
     .table-scroll {
       overflow-x: auto;
-      border-radius: 28px;
+      border-radius: 30px;
       -webkit-overflow-scrolling: touch;
     }
     table {
       width: 100%;
       border-collapse: collapse;
       font-size: 0.85rem;
-      min-width: 1200px;
+      min-width: 1300px;
     }
     th {
-      background: #1b3855;
+      background: #1f4b73;
       color: white;
       padding: 18px 12px;
       font-weight: 600;
       cursor: pointer;
       user-select: none;
+      white-space: nowrap;
     }
     th i {
-      margin-left: 5px;
+      margin-left: 6px;
       font-size: 0.8rem;
     }
     td {
       padding: 16px 12px;
-      border-bottom: 1px solid #e1edf7;
+      border-bottom: 1px solid #e2ecf7;
+      vertical-align: middle;
     }
-    tbody tr {
-      animation: fadeInUp 0.4s ease forwards;
-      opacity: 0;
+    td:first-child, th:first-child { padding-left: 20px; }
+    td:last-child, th:last-child { padding-right: 20px; }
+    tbody tr:hover td {
+      background: #f2f9ff;
     }
-    tbody tr:nth-child(1) { animation-delay: 0.02s; }
-    tbody tr:nth-child(2) { animation-delay: 0.04s; }
-    tbody tr:nth-child(3) { animation-delay: 0.06s; }
-    /* ... अन्य डिले (पर्याप्त) */
     .status-super {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
-      padding: 6px 16px;
+      gap: 8px;
+      padding: 6px 18px;
       border-radius: 40px;
-      font-weight: 700;
+      font-weight: 600;
       font-size: 0.75rem;
       border: 1px solid;
       white-space: nowrap;
     }
     .status-super.complete {
-      background: #dff1e4;
-      color: #136b4c;
-      border-color: #a3d8bb;
+      background: #e1f3e8;
+      color: #0e6b47;
+      border-color: #aadbbc;
     }
     .status-super.progress {
-      background: #fff2db;
-      color: #b45116;
-      border-color: #f9c794;
+      background: #ffefdb;
+      color: #b65118;
+      border-color: #fad49c;
     }
     tfoot {
-      background: #e5eff9;
+      background: #e9f0f9;
     }
     .grand-total-amt {
       font-size: 1.1rem;
       font-weight: 800;
+    }
+    .rupee-cell {
+      text-align: right;
+      font-weight: 600;
     }
 
     /* फुटर */
@@ -418,48 +488,35 @@
       justify-content: space-between;
       align-items: center;
       background: white;
-      border-radius: 28px;
-      padding: 18px 22px;
-      border: 1px solid #bed3e9;
+      border-radius: 50px;
+      padding: 18px 28px;
+      border: 1px solid #c6d7eb;
       flex-wrap: wrap;
-      gap: 15px;
+      gap: 16px;
     }
     .footer-actions {
       display: flex;
-      gap: 15px;
+      gap: 12px;
       flex-wrap: wrap;
     }
     .btn-icon {
-      background: #1a4a75;
+      background: #1d4f7c;
       color: white;
       border: none;
-      padding: 8px 18px;
+      padding: 10px 22px;
       border-radius: 40px;
       font-weight: 600;
       cursor: pointer;
       display: inline-flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       transition: 0.2s;
     }
     .btn-icon:hover {
-      background: #0f3552;
+      background: #0f3b5e;
       transform: scale(1.02);
     }
 
-    /* स्केलेटन लोडिंग */
-    .skeleton {
-      background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
-      background-size: 200% 100%;
-      animation: loading 1.5s infinite;
-      border-radius: 8px;
-    }
-    @keyframes loading {
-      0% { background-position: 200% 0; }
-      100% { background-position: -200% 0; }
-    }
-
-    /* रिस्पॉन्सिव */
     @media (max-width: 1000px) {
       .insight-panel { grid-template-columns: 1fr; }
     }
@@ -468,27 +525,27 @@
     }
     @media (max-width: 500px) {
       .gold-stats { grid-template-columns: 1fr; }
-      .gov-title h1 { font-size: 1.4rem; }
+      .gov-title h1 { font-size: 1.5rem; }
     }
   </style>
 </head>
 <body>
 <div class="flagship-dashboard" id="app">
 
-  <!-- हेडर -->
+  <!-- हेडर (नया आइकन) -->
   <div class="masthead">
     <div class="brand-row">
       <div class="insignia">
-        <div class="ashoka-icon">https://www.brandsoftheworld.com/logo/government-of-bihar</div>
+        <div class="gov-icon"><i class="fas fa-university"></i></div>
         <div class="gov-title">
           <h1>15वीं वित्त + षष्टम राज्य वित्त</h1>
           <div class="sub">
-            <span><i class="fas fa-map-marker-alt"></i> सर्वा | बरबीघा | शेखपुरा</span>
+            <span><i class="fas fa-map-pin"></i> सर्वा | बरबीघा | शेखपुरा</span>
             <span><i class="fas fa-calendar-alt"></i> 2025-26</span>
           </div>
         </div>
       </div>
-      <div class="commission-tag" onclick="toggleDarkMode()" style="cursor: pointer;">
+      <div class="commission-tag" onclick="toggleDarkMode()">
         <i class="fas fa-moon"></i> डार्क मोड
       </div>
     </div>
@@ -502,17 +559,17 @@
     </div>
   </div>
 
-  <!-- कंट्रोल रिबन + फिल्टर -->
+  <!-- कंट्रोल रिबन -->
   <div class="control-ribbon">
     <div class="search-module">
       <i class="fas fa-search"></i>
-      <input type="text" placeholder="कार्य खोजें..." id="searchInput">
+      <input type="text" placeholder="कार्य खोजें (नाम/मद)..." id="searchInput">
     </div>
     <div class="filter-pills" id="filterPills">
       <button class="pill active" data-filter="all"><i class="fas fa-layer-group"></i> सभी</button>
       <button class="pill" data-filter="complete"><i class="fas fa-check"></i> पूर्ण</button>
       <button class="pill" data-filter="progress"><i class="fas fa-clock"></i> प्रगति पर</button>
-      <select id="yearFilter" class="pill" style="background:#ecf3fc; padding:8px 16px;">
+      <select id="yearFilter" class="pill" style="background:#eef4fb; padding:8px 18px;">
         <option value="all">सभी वर्ष</option>
         <option value="2021–22">2021–22</option>
         <option value="2022–23">2022–23</option>
@@ -526,7 +583,6 @@
 
   <!-- इनसाइट + चार्ट -->
   <div class="insight-panel">
-    <!-- बायाँ कार्ड – निष्पादन -->
     <div class="finance-summary">
       <div class="summary-header"><h3><i class="fas fa-chart-pie"></i> निष्पादन</h3><span id="completionPercentBadge">0%</span></div>
       <div class="donut-progress">
@@ -534,21 +590,20 @@
         <span id="completionFraction">0/0</span>
       </div>
       <div class="legend-grid">
-        <div class="legend-item"><span class="color-dot" style="background:#23834b;"></span> पूर्ण: <span id="legendComplete">0</span></div>
+        <div class="legend-item"><span class="color-dot" style="background:#1f8b4c;"></span> पूर्ण: <span id="legendComplete">0</span></div>
         <div class="legend-item"><span class="color-dot" style="background:#de9b45;"></span> प्रगति: <span id="legendProgress">0</span></div>
       </div>
       <div class="quick-stats" id="quickStats"></div>
       <div style="margin-top:16px;"><div class="progress-micro-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div></div>
     </div>
 
-    <!-- दायाँ कार्ड – चार्ट -->
     <div class="chart-card">
       <div class="summary-header"><h3><i class="fas fa-chart-bar"></i> वित्त वर्षानुसार कार्य</h3></div>
       <canvas id="yearChart"></canvas>
     </div>
   </div>
 
-  <!-- टेबल 1: 15वीं वित्त आयोग -->
+  <!-- 15वीं वित्त आयोग -->
   <div class="table-section">
     <div class="table-header">
       <h2><i class="fas fa-landmark"></i> 15वीं वित्त आयोग</h2>
@@ -563,7 +618,7 @@
     </div>
   </div>
 
-  <!-- टेबल 2: षष्टम राज्य वित्त आयोग -->
+  <!-- षष्टम राज्य वित्त -->
   <div class="table-section">
     <div class="table-header">
       <h2><i class="fas fa-building"></i> षष्टम राज्य वित्त</h2>
@@ -578,7 +633,7 @@
     </div>
   </div>
 
-  <!-- फुटर + एक्सपोर्ट बटन -->
+  <!-- फुटर -->
   <div class="excellence-footer">
     <div><i class="fas fa-check-double"></i> पंचायत सर्वा · 24 फरवरी 2026</div>
     <div class="footer-actions">
@@ -590,7 +645,7 @@
 </div>
 
 <script>
-  // ---------- डेटा ----------
+  // ---------- समस्त डेटा (ज्यों का त्यों) ----------
   const schemes = [
     // 15वीं वित्त (24)
     { fund: "15वीं वित्त आयोग", year: "2021–22", desc: "ग्राम पंचायत सर्वा के ग्राम सर्वा के वार्षिक सं0–07 में बौद्धी पोखर के चारों तरफ मिट्टी भराई एवं खरंजीकरण कार्य।", amount: 1096700, status: "पूर्ण" },
@@ -642,11 +697,11 @@
     { fund: "षष्टम राज्य वित्त आयोग", year: "2025–26", desc: "ग्राम सर्वा में लुटन सिंह के घर से अनिल सिंह के घर होते हुए राजेन्द्र सिंह के घर तक नाली निर्माण कार्य ।", amount: 195600, status: "कार्य प्रगति पर" }
   ];
 
-  // ग्लोबल वेरिएबल
+  // --- ग्लोबल वेरिएबल ---
   let currentSort = { table: null, col: 0, asc: true };
   let chartInstance;
 
-  // फॉर्मेटिंग
+  // --- फॉर्मेटिंग ---
   function formatMoney(n) {
     let [int, frac] = n.toFixed(2).split('.');
     let last = int.slice(-3);
@@ -655,19 +710,7 @@
     return '₹' + rest.replace(/\B(?=(\d{2})+(?!\d))/g, ',') + last + '.' + frac;
   }
 
-  // टेबल भरना (बिना फिल्टर)
-  function fillTables() {
-    const s15 = schemes.filter(s => s.fund === '15वीं वित्त आयोग');
-    const sState = schemes.filter(s => s.fund === 'षष्टम राज्य वित्त आयोग');
-    renderTable('table15Body', s15);
-    renderTable('tableStateBody', sState);
-
-    document.getElementById('footer15Total').innerText = formatMoney(s15.reduce((a,s)=>a+s.amount,0));
-    document.getElementById('footerStateTotal').innerText = formatMoney(sState.reduce((a,s)=>a+s.amount,0));
-    document.getElementById('badge15').innerText = s15.length + ' कार्य';
-    document.getElementById('badgeState').innerText = sState.length + ' कार्य';
-  }
-
+  // --- टेबल रेंडर (बिना फिल्टर के भरता है) ---
   function renderTable(tbodyId, data) {
     const tbody = document.getElementById(tbodyId);
     tbody.innerHTML = '';
@@ -678,7 +721,7 @@
     });
   }
 
-  // मेट्रिक्स अपडेट
+  // --- मेट्रिक्स अपडेट ---
   function updateMetrics() {
     const total = schemes.length;
     const completed = schemes.filter(s => s.status === 'पूर्ण').length;
@@ -708,7 +751,7 @@
     `;
   }
 
-  // चार्ट बनाना
+  // --- चार्ट बनाना ---
   function renderChart() {
     const years = [...new Set(schemes.map(s => s.year))];
     const counts = years.map(y => schemes.filter(s => s.year === y).length);
@@ -721,19 +764,20 @@
         datasets: [{
           label: 'कार्यों की संख्या',
           data: counts,
-          backgroundColor: '#1f6392',
+          backgroundColor: '#1f7cb4',
           borderRadius: 8
         }]
       },
       options: {
         responsive: true,
         maintainAspectRatio: false,
-        plugins: { legend: { display: false } }
+        plugins: { legend: { display: false } },
+        scales: { y: { beginAtZero: true, grid: { color: '#c0d4e8' } } }
       }
     });
   }
 
-  // फिल्टर फंक्शन (सर्च + स्टेटस + ईयर)
+  // --- फिल्टर फंक्शन (सर्च + स्टेटस + ईयर) ---
   function filterData() {
     const search = document.getElementById('searchInput').value.toLowerCase();
     const statusFilter = document.querySelector('.pill.active')?.getAttribute('data-filter') || 'all';
@@ -744,7 +788,6 @@
       const matchYear = yearFilter === 'all' ? true : s.year === yearFilter;
       return matchSearch && matchStatus && matchYear;
     });
-    // दोनों टेबल में अलग करके भरें
     const f15 = filtered.filter(s => s.fund === '15वीं वित्त आयोग');
     const fState = filtered.filter(s => s.fund === 'षष्टम राज्य वित्त आयोग');
     renderTable('table15Body', f15);
@@ -755,9 +798,10 @@
     document.getElementById('badgeState').innerText = fState.length + ' कार्य';
   }
 
-  // सॉर्ट फंक्शन
+  // --- सॉर्ट फंक्शन (अब क्रमांक भी ठीक करता है) ---
   function sortTable(col, tableId) {
-    const tbody = document.getElementById(tableId === '15' ? 'table15Body' : 'tableStateBody');
+    const tbodyId = tableId === '15' ? 'table15Body' : 'tableStateBody';
+    const tbody = document.getElementById(tbodyId);
     const rows = Array.from(tbody.rows);
     const asc = currentSort.table === tableId && currentSort.col === col ? !currentSort.asc : true;
     currentSort = { table: tableId, col, asc };
@@ -772,10 +816,25 @@
       else return aVal < bVal ? 1 : -1;
     });
     tbody.innerHTML = '';
-    rows.forEach(r => tbody.appendChild(r));
+    rows.forEach((r, idx) => {
+      r.cells[0].innerText = idx + 1;   // क्रमांक सही करें
+      tbody.appendChild(r);
+    });
   }
 
-  // एक्सपोर्ट CSV
+  // --- सभी टेबल भरना (शुरूआत) ---
+  function fillTables() {
+    const s15 = schemes.filter(s => s.fund === '15वीं वित्त आयोग');
+    const sState = schemes.filter(s => s.fund === 'षष्टम राज्य वित्त आयोग');
+    renderTable('table15Body', s15);
+    renderTable('tableStateBody', sState);
+    document.getElementById('footer15Total').innerText = formatMoney(s15.reduce((a,s)=>a+s.amount,0));
+    document.getElementById('footerStateTotal').innerText = formatMoney(sState.reduce((a,s)=>a+s.amount,0));
+    document.getElementById('badge15').innerText = s15.length + ' कार्य';
+    document.getElementById('badgeState').innerText = sState.length + ' कार्य';
+  }
+
+  // --- एक्सपोर्ट CSV ---
   function exportCSV() {
     let csv = "क्र.,मद,वित्त वर्ष,योजना का नाम,राशि,स्थिति\n";
     schemes.forEach((s,i) => {
@@ -789,7 +848,7 @@
     a.click();
   }
 
-  // एक्सपोर्ट PDF (सिंपल)
+  // --- एक्सपोर्ट PDF (सिंपल) ---
   function exportPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
@@ -802,15 +861,19 @@
     doc.save('panchayat_sarva.pdf');
   }
 
-  // डार्क मोड टॉगल
+  // --- डार्क मोड टॉगल ---
   function toggleDarkMode() {
     document.body.classList.toggle('dark-mode');
-    const btn = document.querySelector('.commission-tag i');
-    btn.classList.toggle('fa-moon');
-    btn.classList.toggle('fa-sun');
+    const btnIcon = document.querySelector('.commission-tag i');
+    if (btnIcon) {
+      btnIcon.classList.toggle('fa-moon');
+      btnIcon.classList.toggle('fa-sun');
+    }
+    // चार्ट का रंग डार्क मोड में बदलें (सिंपल तरीका)
+    renderChart(); 
   }
 
-  // इवेंट लिसनर
+  // --- इवेंट लिसनर ---
   document.getElementById('searchInput').addEventListener('input', filterData);
   document.getElementById('yearFilter').addEventListener('change', filterData);
   document.querySelectorAll('.pill').forEach(p => {
@@ -821,7 +884,7 @@
     });
   });
 
-  // इनिशियलाइज़
+  // --- इनिशियलाइज़ ---
   fillTables();
   updateMetrics();
   renderChart();
