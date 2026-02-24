@@ -104,6 +104,10 @@
       background: #fbbf24;
       color: #0f1825;
     }
+    body.dark-mode .modal-content {
+      background: #1f2b3a;
+      color: #f8fafc;
+    }
 
     .flagship-dashboard {
       max-width: 1600px;
@@ -133,6 +137,47 @@
     .toast-notification.show {
       opacity: 1;
       transform: translateY(0);
+    }
+
+    /* === मोडल === */
+    .modal {
+      display: none;
+      position: fixed;
+      z-index: 10000;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0,0,0,0.5);
+      align-items: center;
+      justify-content: center;
+    }
+    .modal.show {
+      display: flex;
+    }
+    .modal-content {
+      background: white;
+      padding: 30px;
+      border-radius: 32px;
+      max-width: 500px;
+      width: 90%;
+      box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+      position: relative;
+      border: 2px solid #fbbf24;
+    }
+    .modal-close {
+      position: absolute;
+      top: 15px;
+      right: 20px;
+      font-size: 24px;
+      cursor: pointer;
+    }
+    .modal h3 {
+      margin-bottom: 20px;
+      color: #f97316;
+    }
+    .modal p {
+      margin: 10px 0;
     }
 
     /* === हेडर - नया ग्लासमॉर्फिक डिज़ाइन === */
@@ -189,6 +234,7 @@
       color: #0f2a44;
       box-shadow: 0 4px 8px #00000030;
       text-transform: uppercase;
+      animation: fadeInUp 0.5s ease;
     }
     .gov-title h1 {
       font-weight: 800;
@@ -249,6 +295,7 @@
       gap: 16px;
       border: 1px solid rgba(255,255,255,0.25);
       transition: 0.2s;
+      animation: fadeInUp 0.6s ease;
     }
     .metric-gold:hover {
       background: rgba(255,255,255,0.25);
@@ -288,6 +335,12 @@
       padding: 20px;
       border: 1px solid #fbbf24;
       box-shadow: 0 10px 18px -8px rgba(251, 191, 36, 0.3);
+      transition: transform 0.2s, box-shadow 0.2s;
+      animation: fadeInUp 0.7s ease;
+    }
+    .feature-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 15px 25px -8px #fbbf24;
     }
     .feature-title {
       font-size: 1.1rem;
@@ -393,6 +446,7 @@
     .extra-tools {
       display: flex;
       gap: 8px;
+      align-items: center;
     }
     .extra-btn {
       background: #fff7e0;
@@ -412,6 +466,14 @@
       background: #fbbf24;
       color: #0f2a44;
       transform: scale(1.05);
+    }
+    .language-switch {
+      background: #fff7e0;
+      border: none;
+      padding: 10px 18px;
+      border-radius: 40px;
+      font-weight: 600;
+      cursor: pointer;
     }
 
     /* कॉलम टॉगल ड्रॉपडाउन */
@@ -443,7 +505,7 @@
     /* इनसाइट पैनल */
     .insight-panel {
       display: grid;
-      grid-template-columns: 2fr 1.2fr;
+      grid-template-columns: 1fr 1.2fr;
       gap: 24px;
     }
     .chart-card {
@@ -540,6 +602,11 @@
       max-height: 180px !important;
       width: 100% !important;
     }
+    #pieChart {
+      max-height: 150px !important;
+      width: 100% !important;
+      margin-top: 15px;
+    }
 
     /* टेबल सेक्शन */
     .table-section {
@@ -592,6 +659,11 @@
     td {
       padding: 14px 12px;
       border-bottom: 1px solid #fed7aa;
+      cursor: pointer;
+      transition: background 0.1s;
+    }
+    td:hover {
+      background: #fff3cd;
     }
     tbody tr:nth-child(even) {
       background: #fffdf7;
@@ -710,6 +782,41 @@
       transform: translateY(-2px);
     }
 
+    /* टूलटिप */
+    [data-tooltip] {
+      position: relative;
+      cursor: help;
+    }
+    [data-tooltip]:before {
+      content: attr(data-tooltip);
+      position: absolute;
+      bottom: 100%;
+      left: 50%;
+      transform: translateX(-50%);
+      background: #0f2a44;
+      color: white;
+      padding: 5px 10px;
+      border-radius: 20px;
+      font-size: 0.75rem;
+      white-space: nowrap;
+      display: none;
+      z-index: 1000;
+    }
+    [data-tooltip]:hover:before {
+      display: block;
+    }
+
+    @keyframes fadeInUp {
+      from {
+        opacity: 0;
+        transform: translateY(20px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
     @media (max-width: 1000px) {
       .insight-panel, .feature-grid { grid-template-columns: 1fr; }
     }
@@ -734,7 +841,7 @@
           <div class="logo-circle">PRD</div>
         </div>
         <div class="gov-title">
-          <h1>15वीं वित्त + षष्टम राज्य वित्त</h1>
+          <h1 id="mainHeading">15वीं वित्त + षष्टम राज्य वित्त</h1>
           <div class="sub">
             <span><i class="fas fa-map-marker-alt"></i> सर्वा | बरबीघा | शेखपुरा</span>
             <span><i class="fas fa-calendar-alt"></i> 2025-26</span>
@@ -744,36 +851,42 @@
       <div style="display: flex; align-items: center; gap: 16px;">
         <span class="live-clock" id="liveClock"></span>
         <div class="commission-tag" onclick="toggleDarkMode()" tabindex="0" role="button">
-          <i class="fas fa-moon"></i> डार्क मोड
+          <i class="fas fa-moon"></i> <span id="darkModeText">डार्क मोड</span>
         </div>
+        <button class="language-switch" onclick="toggleLanguage()"><i class="fas fa-language"></i> <span id="langText">English</span></button>
       </div>
     </div>
 
     <!-- स्टैट्स कार्ड -->
     <div class="gold-stats" id="metricCards">
-      <div class="metric-gold"><span class="metric-icon"><i class="fas fa-tasks"></i></span><div class="metric-content"><h2 id="totalSchemes">0</h2><p>कुल योजनाएँ</p></div></div>
-      <div class="metric-gold"><span class="metric-icon"><i class="fas fa-check-circle"></i></span><div class="metric-content"><h2 id="completedSchemes">0</h2><p>पूर्ण कार्य</p></div></div>
-      <div class="metric-gold"><span class="metric-icon"><i class="fas fa-spinner"></i></span><div class="metric-content"><h2 id="progressSchemes">0</h2><p>प्रगति पर</p></div></div>
-      <div class="metric-gold"><span class="metric-icon"><i class="fas fa-coins"></i></span><div class="metric-content"><h2 id="totalAmount">₹0</h2><p>कुल परिव्यय</p></div></div>
+      <div class="metric-gold"><span class="metric-icon"><i class="fas fa-tasks"></i></span><div class="metric-content"><h2 id="totalSchemes">0</h2><p id="totalSchemesLabel">कुल योजनाएँ</p></div></div>
+      <div class="metric-gold"><span class="metric-icon"><i class="fas fa-check-circle"></i></span><div class="metric-content"><h2 id="completedSchemes">0</h2><p id="completedSchemesLabel">पूर्ण कार्य</p></div></div>
+      <div class="metric-gold"><span class="metric-icon"><i class="fas fa-spinner"></i></span><div class="metric-content"><h2 id="progressSchemes">0</h2><p id="progressSchemesLabel">प्रगति पर</p></div></div>
+      <div class="metric-gold"><span class="metric-icon"><i class="fas fa-coins"></i></span><div class="metric-content"><h2 id="totalAmount">₹0</h2><p id="totalAmountLabel">कुल परिव्यय</p></div></div>
     </div>
   </div>
 
-  <!-- नए फीचर कार्ड (गेज, टॉप प्रोजेक्ट्स, रिपोर्ट कार्ड) -->
+  <!-- नए फीचर कार्ड (गेज, टॉप प्रोजेक्ट्स, रिपोर्ट कार्ड) + अब पाई चार्ट पहले कार्ड में ही -->
   <div class="feature-grid">
     <div class="feature-card">
-      <div class="feature-title"><i class="fas fa-chart-line"></i> बजट उपयोग</div>
+      <div class="feature-title"><i class="fas fa-chart-line"></i> <span class="budgetTitle">बजट उपयोग</span></div>
       <div class="budget-gauge"><div class="gauge-fill" id="budgetGaugeFill" style="width:0%"></div></div>
       <div style="display: flex; justify-content: space-between;">
-        <span>उपयोग: <span id="budgetUsed">₹0</span></span>
-        <span>कुल: <span id="budgetTotal">₹0</span></span>
+        <span class="usedLabel">उपयोग: <span id="budgetUsed">₹0</span></span>
+        <span class="totalLabel">कुल: <span id="budgetTotal">₹0</span></span>
+      </div>
+      <!-- पाई चार्ट (फंड वार वितरण) यहाँ जोड़ा गया -->
+      <div style="margin-top: 20px;">
+        <div class="feature-title" style="margin-bottom: 5px;"><i class="fas fa-chart-pie"></i> <span id="pieTitle">फंड वार वितरण</span></div>
+        <canvas id="pieChart"></canvas>
       </div>
     </div>
     <div class="feature-card">
-      <div class="feature-title"><i class="fas fa-crown"></i> टॉप 3 योजनाएँ</div>
+      <div class="feature-title"><i class="fas fa-crown"></i> <span class="topProjectsTitle">टॉप 3 योजनाएँ</span></div>
       <div id="topProjects"></div>
     </div>
     <div class="feature-card">
-      <div class="feature-title"><i class="fas fa-calendar-check"></i> वर्षवार सफलता</div>
+      <div class="feature-title"><i class="fas fa-calendar-check"></i> <span class="yearlySuccessTitle">वर्षवार सफलता</span></div>
       <div id="yearlyReport"></div>
     </div>
   </div>
@@ -785,9 +898,9 @@
       <input type="text" placeholder="कार्य खोजें..." id="searchInput">
     </div>
     <div class="filter-pills" id="filterPills">
-      <button class="pill active" data-filter="all"><i class="fas fa-layer-group"></i> सभी</button>
-      <button class="pill" data-filter="complete"><i class="fas fa-check"></i> पूर्ण</button>
-      <button class="pill" data-filter="progress"><i class="fas fa-clock"></i> प्रगति पर</button>
+      <button class="pill active" data-filter="all"><i class="fas fa-layer-group"></i> <span class="filterAll">सभी</span></button>
+      <button class="pill" data-filter="complete"><i class="fas fa-check"></i> <span class="filterComplete">पूर्ण</span></button>
+      <button class="pill" data-filter="progress"><i class="fas fa-clock"></i> <span class="filterProgress">प्रगति पर</span></button>
       <select id="yearFilter">
         <option value="all">सभी वर्ष</option>
         <option value="2021–22">2021–22</option>
@@ -797,7 +910,7 @@
         <option value="2024–2025">2024–2025</option>
         <option value="2025–26">2025–26</option>
       </select>
-      <button class="pill" onclick="resetFilters()"><i class="fas fa-undo-alt"></i> रीसेट</button>
+      <button class="pill" onclick="resetFilters()"><i class="fas fa-undo-alt"></i> <span class="resetLabel">रीसेट</span></button>
     </div>
     <div class="extra-tools">
       <button class="extra-btn" onclick="toggleFullScreen()" title="फुल स्क्रीन"><i class="fas fa-expand"></i></button>
@@ -831,18 +944,18 @@
   <!-- इनसाइट पैनल (चार्ट + निष्पादन) -->
   <div class="insight-panel">
     <div class="chart-card">
-      <div class="summary-header"><h3><i class="fas fa-chart-bar"></i> वित्त वर्षानुसार कार्य</h3></div>
+      <div class="summary-header"><h3><i class="fas fa-chart-bar"></i> <span id="barTitle">वित्त वर्षानुसार कार्य</span></h3></div>
       <canvas id="yearChart"></canvas>
     </div>
     <div class="finance-summary">
-      <div class="summary-header"><h3><i class="fas fa-chart-pie"></i> निष्पादन</h3><span id="completionPercentBadge">0%</span></div>
+      <div class="summary-header"><h3><i class="fas fa-chart-pie"></i> <span id="summaryTitle">निष्पादन</span></h3><span id="completionPercentBadge">0%</span></div>
       <div class="donut-progress">
         <div class="donut" id="donutPercent">0%</div>
         <span id="completionFraction">0/0</span>
       </div>
       <div class="legend-grid">
-        <div class="legend-item"><span class="color-dot" style="background:#16a34a;"></span> पूर्ण: <span id="legendComplete">0</span></div>
-        <div class="legend-item"><span class="color-dot" style="background:#f97316;"></span> प्रगति: <span id="legendProgress">0</span></div>
+        <div class="legend-item"><span class="color-dot" style="background:#16a34a;"></span> <span id="legendCompleteLabel">पूर्ण</span>: <span id="legendComplete">0</span></div>
+        <div class="legend-item"><span class="color-dot" style="background:#f97316;"></span> <span id="legendProgressLabel">प्रगति</span>: <span id="legendProgress">0</span></div>
       </div>
       <div class="quick-stats" id="quickStats"></div>
       <div style="margin-top:16px;"><div class="progress-micro-bar"><div class="progress-fill" id="progressFill" style="width:0%"></div></div></div>
@@ -852,7 +965,7 @@
   <!-- 15वीं वित्त टेबल (पेजिनेशन के साथ) -->
   <div class="table-section">
     <div class="table-header">
-      <h2><i class="fas fa-landmark"></i> 15वीं वित्त आयोग</h2>
+      <h2><i class="fas fa-landmark"></i> <span id="table15Title">15वीं वित्त आयोग</span></h2>
       <div class="badge" id="badge15">0 कार्य</div>
     </div>
     <div class="table-scroll">
@@ -864,7 +977,7 @@
     </div>
     <div class="pagination-wrapper" id="paginationWrapper15">
       <div class="rows-selector">
-        <span>पंक्तियाँ:</span>
+        <span id="rowsLabel15">पंक्तियाँ:</span>
         <select id="rowsPerPage15" onchange="changeRowsPerPage('15')">
           <option value="5">5</option>
           <option value="10" selected>10</option>
@@ -878,7 +991,7 @@
   <!-- षष्टम राज्य वित्त टेबल (पेजिनेशन के साथ) -->
   <div class="table-section">
     <div class="table-header">
-      <h2><i class="fas fa-building"></i> षष्टम राज्य वित्त</h2>
+      <h2><i class="fas fa-building"></i> <span id="tableStateTitle">षष्टम राज्य वित्त</span></h2>
       <div class="badge" id="badgeState">0 कार्य</div>
     </div>
     <div class="table-scroll">
@@ -890,7 +1003,7 @@
     </div>
     <div class="pagination-wrapper" id="paginationWrapperState">
       <div class="rows-selector">
-        <span>पंक्तियाँ:</span>
+        <span id="rowsLabelState">पंक्तियाँ:</span>
         <select id="rowsPerPageState" onchange="changeRowsPerPage('state')">
           <option value="5">5</option>
           <option value="10" selected>10</option>
@@ -901,19 +1014,35 @@
     </div>
   </div>
 
-  <!-- फुटर -->
+  <!-- फुटर (Created By Aman Kumar जोड़ा गया) -->
   <div class="excellence-footer">
-    <div><i class="fas fa-check-double"></i> पंचायत सर्वा · 24 फरवरी 2026</div>
+    <div>
+      <i class="fas fa-check-double"></i> पंचायत सर्वा · <span id="lastUpdated"></span><br>
+      Created By Aman Kumar
+    </div>
     <div class="footer-actions">
       <button class="btn-icon" onclick="exportCSV()"><i class="fas fa-file-csv"></i> CSV</button>
       <button class="btn-icon" onclick="exportExcel()"><i class="fas fa-file-excel"></i> Excel</button>
       <button class="btn-icon" onclick="exportPDF()"><i class="fas fa-file-pdf"></i> PDF</button>
-      <button class="btn-icon" onclick="window.print()"><i class="fas fa-print"></i> प्रिंट</button>
+      <button class="btn-icon" onclick="window.print()"><i class="fas fa-print"></i> <span id="printLabel">प्रिंट</span></button>
     </div>
   </div>
 
   <!-- टोस्ट नोटिफिकेशन -->
   <div id="toast" class="toast-notification"></div>
+
+  <!-- मोडल विंडो (प्रोजेक्ट डिटेल) -->
+  <div id="projectModal" class="modal">
+    <div class="modal-content">
+      <span class="modal-close" onclick="closeModal()">&times;</span>
+      <h3 id="modalTitle">योजना का विवरण</h3>
+      <p><strong id="modalFundLabel">मद:</strong> <span id="modalFund"></span></p>
+      <p><strong id="modalYearLabel">वित्त वर्ष:</strong> <span id="modalYear"></span></p>
+      <p><strong id="modalDescLabel">योजना का नाम:</strong> <span id="modalDesc"></span></p>
+      <p><strong id="modalAmountLabel">राशि:</strong> <span id="modalAmount"></span></p>
+      <p><strong id="modalStatusLabel">स्थिति:</strong> <span id="modalStatus"></span></p>
+    </div>
+  </div>
 </div>
 
 <script>
@@ -972,11 +1101,13 @@
   // ग्लोबल वेरिएबल
   let currentSort = { table: null, col: 0, asc: true };
   let chartInstance;
+  let pieChartInstance;
   // पेजिनेशन के लिए
   let currentPage15 = 1;
   let currentPageState = 1;
   let rowsPerPage15 = 10;
   let rowsPerPageState = 10;
+  let currentLanguage = 'hi'; // 'hi' or 'en'
 
   // टोस्ट फंक्शन
   function showToast(message, duration = 3000) {
@@ -997,7 +1128,7 @@
         document.exitFullscreen();
       }
     }
-    showToast('फुल स्क्रीन मोड टॉगल किया गया');
+    showToast(currentLanguage === 'hi' ? 'फुल स्क्रीन मोड टॉगल किया गया' : 'Full screen toggled');
   }
 
   // कॉलम ड्रॉपडाउन टॉगल
@@ -1044,6 +1175,12 @@
   }
   setInterval(updateClock, 1000);
 
+  // अंतिम अपडेट टाइमस्टैम्प
+  function setLastUpdated() {
+    const now = new Date();
+    document.getElementById('lastUpdated').innerText = now.toLocaleString('hi-IN');
+  }
+
   // फॉर्मेट मनी
   function formatMoney(n) {
     let [int, frac] = n.toFixed(2).split('.');
@@ -1063,7 +1200,16 @@
     pageData.forEach((s, i) => {
       let cls = s.status === 'पूर्ण' ? 'complete' : 'progress';
       let ico = s.status === 'पूर्ण' ? 'fa-check' : 'fa-clock';
-      tbody.innerHTML += `<tr><td>${start + i + 1}</td><td>${s.fund}</td><td>${s.year}</td><td>${s.desc}</td><td class="rupee-cell">${formatMoney(s.amount)}</td><td><span class="status-super ${cls}"><i class="fas ${ico}"></i> ${s.status}</span></td></tr>`;
+      // टूलटिप के लिए शॉर्ट डिस्क्रिप्शन
+      let shortDesc = s.desc.length > 50 ? s.desc.substring(0,50)+'...' : s.desc;
+      tbody.innerHTML += `<tr onclick="showProjectModal('${s.fund.replace(/'/g, "\\'")}', '${s.year}', '${s.desc.replace(/'/g, "\\'")}', ${s.amount}, '${s.status}')">
+        <td>${start + i + 1}</td>
+        <td>${s.fund}</td>
+        <td>${s.year}</td>
+        <td data-tooltip="${s.desc}">${shortDesc}</td>
+        <td class="rupee-cell">${formatMoney(s.amount)}</td>
+        <td><span class="status-super ${cls}"><i class="fas ${ico}"></i> ${s.status}</span></td>
+      </tr>`;
     });
     renderPagination(data.length, page, tableType, rowsPerPage);
     setTimeout(() => {
@@ -1135,10 +1281,10 @@
     const minS = schemes.reduce((a,b)=>a.amount<b.amount?a:b);
     const completedAmt = schemes.filter(s=>s.status==='पूर्ण').reduce((a,s)=>a+s.amount,0);
     document.getElementById('quickStats').innerHTML = `
-      <div class="stat-row"><span>औसत पूर्ण</span> <strong>${formatMoney(avg)}</strong></div>
-      <div class="stat-row"><span>अधिकतम</span> <strong>${formatMoney(maxS.amount)}</strong></div>
-      <div class="stat-row"><span>न्यूनतम</span> <strong>${formatMoney(minS.amount)}</strong></div>
-      <div class="stat-row"><span>कुल पूर्ण</span> <strong>${formatMoney(completedAmt)}</strong></div>
+      <div class="stat-row"><span>${currentLanguage === 'hi' ? 'औसत पूर्ण' : 'Avg Completed'}</span> <strong>${formatMoney(avg)}</strong></div>
+      <div class="stat-row"><span>${currentLanguage === 'hi' ? 'अधिकतम' : 'Max'}</span> <strong>${formatMoney(maxS.amount)}</strong></div>
+      <div class="stat-row"><span>${currentLanguage === 'hi' ? 'न्यूनतम' : 'Min'}</span> <strong>${formatMoney(minS.amount)}</strong></div>
+      <div class="stat-row"><span>${currentLanguage === 'hi' ? 'कुल पूर्ण' : 'Total Completed'}</span> <strong>${formatMoney(completedAmt)}</strong></div>
     `;
 
     // बजट गेज
@@ -1150,7 +1296,7 @@
     const top3 = [...schemes].sort((a,b)=>b.amount-a.amount).slice(0,3);
     let topHtml = '';
     top3.forEach(s => {
-      topHtml += `<div class="top-project-item"><span>${s.desc.substring(0,25)}...</span> <strong>${formatMoney(s.amount)}</strong></div>`;
+      topHtml += `<div class="top-project-item"><span data-tooltip="${s.desc}">${s.desc.substring(0,25)}...</span> <strong>${formatMoney(s.amount)}</strong></div>`;
     });
     document.getElementById('topProjects').innerHTML = topHtml;
 
@@ -1167,7 +1313,8 @@
   }
 
   // चार्ट
-  function renderChart() {
+  function renderCharts() {
+    // बार चार्ट
     const years = [...new Set(schemes.map(s => s.year))];
     const counts = years.map(y => schemes.filter(s => s.year === y).length);
     const ctx = document.getElementById('yearChart').getContext('2d');
@@ -1177,7 +1324,7 @@
       data: {
         labels: years,
         datasets: [{
-          label: 'कार्यों की संख्या',
+          label: currentLanguage === 'hi' ? 'कार्यों की संख्या' : 'Number of Works',
           data: counts,
           backgroundColor: '#fbbf24',
           borderRadius: 8
@@ -1188,6 +1335,28 @@
         maintainAspectRatio: false,
         plugins: { legend: { display: false } },
         scales: { y: { beginAtZero: true, grid: { color: '#fed7aa' } } }
+      }
+    });
+
+    // पाई चार्ट (फंड वार राशि)
+    const fund15Total = schemes.filter(s => s.fund === '15वीं वित्त आयोग').reduce((a,s)=>a+s.amount,0);
+    const fundStateTotal = schemes.filter(s => s.fund === 'षष्टम राज्य वित्त आयोग').reduce((a,s)=>a+s.amount,0);
+    const pieCtx = document.getElementById('pieChart').getContext('2d');
+    if (pieChartInstance) pieChartInstance.destroy();
+    pieChartInstance = new Chart(pieCtx, {
+      type: 'pie',
+      data: {
+        labels: [currentLanguage === 'hi' ? '15वीं वित्त' : '15th Finance', currentLanguage === 'hi' ? 'राज्य वित्त' : 'State Finance'],
+        datasets: [{
+          data: [fund15Total, fundStateTotal],
+          backgroundColor: ['#fbbf24', '#f97316'],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { position: 'bottom' } }
       }
     });
   }
@@ -1213,10 +1382,10 @@
     renderTable('tableStateBody', fState, currentPageState, 'state', rowsPerPageState);
     document.getElementById('footer15Total').innerText = formatMoney(f15.reduce((a,s)=>a+s.amount,0));
     document.getElementById('footerStateTotal').innerText = formatMoney(fState.reduce((a,s)=>a+s.amount,0));
-    document.getElementById('badge15').innerText = f15.length + ' कार्य';
-    document.getElementById('badgeState').innerText = fState.length + ' कार्य';
+    document.getElementById('badge15').innerText = f15.length + (currentLanguage === 'hi' ? ' कार्य' : ' works');
+    document.getElementById('badgeState').innerText = fState.length + (currentLanguage === 'hi' ? ' कार्य' : ' works');
 
-    showToast('फ़िल्टर लागू किया गया');
+    showToast(currentLanguage === 'hi' ? 'फ़िल्टर लागू किया गया' : 'Filter applied');
   }
 
   // रीसेट फिल्टर
@@ -1228,7 +1397,7 @@
     currentPage15 = 1;
     currentPageState = 1;
     filterData();
-    showToast('सभी फ़िल्टर हटा दिए गए');
+    showToast(currentLanguage === 'hi' ? 'सभी फ़िल्टर हटा दिए गए' : 'All filters reset');
   }
 
   // सॉर्ट
@@ -1264,7 +1433,7 @@
 
     const rowsPerPage = tableId === '15' ? rowsPerPage15 : rowsPerPageState;
     renderTable(tbodyId, data, 1, tableId, rowsPerPage);
-    showToast('डेटा सॉर्ट किया गया');
+    showToast(currentLanguage === 'hi' ? 'डेटा सॉर्ट किया गया' : 'Data sorted');
   }
 
   // सेटिंग्स सेव और लोड
@@ -1319,7 +1488,7 @@
     a.href = url;
     a.download = 'panchayat_sarva_data.csv';
     a.click();
-    showToast('CSV डाउनलोड हुआ');
+    showToast('CSV ' + (currentLanguage === 'hi' ? 'डाउनलोड हुआ' : 'downloaded'));
   }
 
   // एक्सपोर्ट Excel
@@ -1332,21 +1501,38 @@
     const ws = XLSX.utils.aoa_to_sheet(wsData);
     XLSX.utils.book_append_sheet(wb, ws, "कार्य");
     XLSX.writeFile(wb, "panchayat_sarva_data.xlsx");
-    showToast('Excel डाउनलोड हुआ');
+    showToast('Excel ' + (currentLanguage === 'hi' ? 'डाउनलोड हुआ' : 'downloaded'));
   }
 
-  // एक्सपोर्ट PDF
+  // एक्सपोर्ट PDF (बेहतर)
   function exportPDF() {
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
-    doc.text('ग्राम पंचायत सर्वा - कार्य सूची', 10, 10);
+    const title = currentLanguage === 'hi' ? 'ग्राम पंचायत सर्वा - कार्य सूची' : 'Gram Panchayat Sarva - Work List';
+    doc.text(title, 10, 10);
+    doc.setFontSize(10);
     let y = 20;
+    // सारांश
+    const total = schemes.length;
+    const completed = schemes.filter(s => s.status === 'पूर्ण').length;
+    const totalAmt = schemes.reduce((a,s)=>a+s.amount,0);
+    doc.text(`${currentLanguage === 'hi' ? 'कुल योजनाएँ' : 'Total Schemes'}: ${total}`, 10, y);
+    y += 6;
+    doc.text(`${currentLanguage === 'hi' ? 'पूर्ण' : 'Completed'}: ${completed}`, 10, y);
+    y += 6;
+    doc.text(`${currentLanguage === 'hi' ? 'कुल राशि' : 'Total Amount'}: ${formatMoney(totalAmt)}`, 10, y);
+    y += 10;
     schemes.slice(0, 20).forEach((s,i) => {
-      doc.text(`${i+1}. ${s.fund} (${s.year}) - ${s.desc.substring(0,50)}...`, 10, y);
+      let line = `${i+1}. ${s.fund} (${s.year}) - ${s.desc.substring(0,50)}...`;
+      doc.text(line, 10, y);
       y += 7;
+      if (y > 280) {
+        doc.addPage();
+        y = 20;
+      }
     });
     doc.save('panchayat_sarva.pdf');
-    showToast('PDF डाउनलोड हुआ');
+    showToast('PDF ' + (currentLanguage === 'hi' ? 'डाउनलोड हुआ' : 'downloaded'));
   }
 
   // डार्क मोड
@@ -1357,8 +1543,61 @@
       btnIcon.classList.toggle('fa-moon');
       btnIcon.classList.toggle('fa-sun');
     }
-    renderChart();
-    showToast('डार्क मोड टॉगल किया गया');
+    renderCharts();
+    showToast(currentLanguage === 'hi' ? 'डार्क मोड टॉगल किया गया' : 'Dark mode toggled');
+  }
+
+  // भाषा टॉगल
+  function toggleLanguage() {
+    currentLanguage = currentLanguage === 'hi' ? 'en' : 'hi';
+    document.getElementById('langText').innerText = currentLanguage === 'hi' ? 'English' : 'हिंदी';
+    document.getElementById('darkModeText').innerText = currentLanguage === 'hi' ? 'डार्क मोड' : 'Dark Mode';
+    document.getElementById('mainHeading').innerText = currentLanguage === 'hi' ? '15वीं वित्त + षष्टम राज्य वित्त' : '15th Finance + 6th State Finance';
+    document.getElementById('totalSchemesLabel').innerText = currentLanguage === 'hi' ? 'कुल योजनाएँ' : 'Total Schemes';
+    document.getElementById('completedSchemesLabel').innerText = currentLanguage === 'hi' ? 'पूर्ण कार्य' : 'Completed';
+    document.getElementById('progressSchemesLabel').innerText = currentLanguage === 'hi' ? 'प्रगति पर' : 'In Progress';
+    document.getElementById('totalAmountLabel').innerText = currentLanguage === 'hi' ? 'कुल परिव्यय' : 'Total Expenditure';
+    document.querySelector('.budgetTitle').innerText = currentLanguage === 'hi' ? 'बजट उपयोग' : 'Budget Usage';
+    document.querySelector('.topProjectsTitle').innerText = currentLanguage === 'hi' ? 'टॉप 3 योजनाएँ' : 'Top 3 Schemes';
+    document.querySelector('.yearlySuccessTitle').innerText = currentLanguage === 'hi' ? 'वर्षवार सफलता' : 'Yearly Success';
+    document.getElementById('pieTitle').innerText = currentLanguage === 'hi' ? 'फंड वार वितरण' : 'Fund-wise Distribution';
+    document.querySelector('.filterAll').innerText = currentLanguage === 'hi' ? 'सभी' : 'All';
+    document.querySelector('.filterComplete').innerText = currentLanguage === 'hi' ? 'पूर्ण' : 'Complete';
+    document.querySelector('.filterProgress').innerText = currentLanguage === 'hi' ? 'प्रगति पर' : 'Progress';
+    document.querySelector('.resetLabel').innerText = currentLanguage === 'hi' ? 'रीसेट' : 'Reset';
+    document.getElementById('barTitle').innerText = currentLanguage === 'hi' ? 'वित्त वर्षानुसार कार्य' : 'Works by Year';
+    document.getElementById('summaryTitle').innerText = currentLanguage === 'hi' ? 'निष्पादन' : 'Performance';
+    document.getElementById('legendCompleteLabel').innerText = currentLanguage === 'hi' ? 'पूर्ण' : 'Completed';
+    document.getElementById('legendProgressLabel').innerText = currentLanguage === 'hi' ? 'प्रगति' : 'Progress';
+    document.getElementById('table15Title').innerText = currentLanguage === 'hi' ? '15वीं वित्त आयोग' : '15th Finance Commission';
+    document.getElementById('tableStateTitle').innerText = currentLanguage === 'hi' ? 'षष्टम राज्य वित्त' : '6th State Finance';
+    document.getElementById('rowsLabel15').innerText = currentLanguage === 'hi' ? 'पंक्तियाँ:' : 'Rows:';
+    document.getElementById('rowsLabelState').innerText = currentLanguage === 'hi' ? 'पंक्तियाँ:' : 'Rows:';
+    document.getElementById('printLabel').innerText = currentLanguage === 'hi' ? 'प्रिंट' : 'Print';
+    document.getElementById('modalTitle').innerText = currentLanguage === 'hi' ? 'योजना का विवरण' : 'Project Details';
+    document.getElementById('modalFundLabel').innerText = currentLanguage === 'hi' ? 'मद:' : 'Fund:';
+    document.getElementById('modalYearLabel').innerText = currentLanguage === 'hi' ? 'वित्त वर्ष:' : 'Year:';
+    document.getElementById('modalDescLabel').innerText = currentLanguage === 'hi' ? 'योजना का नाम:' : 'Description:';
+    document.getElementById('modalAmountLabel').innerText = currentLanguage === 'hi' ? 'राशि:' : 'Amount:';
+    document.getElementById('modalStatusLabel').innerText = currentLanguage === 'hi' ? 'स्थिति:' : 'Status:';
+    updateMetrics();
+    renderCharts();
+    filterData();
+    showToast(currentLanguage === 'hi' ? 'भाषा बदली गई' : 'Language switched');
+  }
+
+  // मोडल फंक्शन
+  function showProjectModal(fund, year, desc, amount, status) {
+    document.getElementById('modalFund').innerText = fund;
+    document.getElementById('modalYear').innerText = year;
+    document.getElementById('modalDesc').innerText = desc;
+    document.getElementById('modalAmount').innerText = formatMoney(amount);
+    document.getElementById('modalStatus').innerText = status;
+    document.getElementById('projectModal').classList.add('show');
+  }
+
+  function closeModal() {
+    document.getElementById('projectModal').classList.remove('show');
   }
 
   // इवेंट्स
@@ -1391,8 +1630,9 @@
 
   // इनिशियलाइज़
   loadSettings();
+  setLastUpdated();
   updateMetrics();
-  renderChart();
+  renderCharts();
   filterData();
   updateClock();
   setTimeout(() => {
@@ -1411,6 +1651,9 @@
   window.changePage = changePage;
   window.changeRowsPerPage = changeRowsPerPage;
   window.resetFilters = resetFilters;
+  window.toggleLanguage = toggleLanguage;
+  window.showProjectModal = showProjectModal;
+  window.closeModal = closeModal;
 </script>
 </body>
 </html>
